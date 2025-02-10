@@ -32,6 +32,13 @@ export const getAllModelsService = async ({
 };
 
 export const getModelByIdService = async (id) => {
+  console.log(
+    "%cMyProject%cline:35%cid",
+    "color:#fff;background:#ee6f57;padding:3px;border-radius:2px",
+    "color:#fff;background:#1f3c88;padding:3px;border-radius:2px",
+    "color:#fff;background:rgb(23, 44, 60);padding:3px;border-radius:2px",
+    id
+  );
   return await prisma.model.findUnique({ where: { id } });
 };
 

@@ -1,4 +1,6 @@
-import { body } from "express-validator";
+import { body, param } from "express-validator";
+import { query } from "express-validator";
+import { getModelByIdService } from "../../../services/adminPanel/modelServices.js";
 
 export const validateCreateModel = [
   body("prismaName")
@@ -20,4 +22,25 @@ export const validateCreateModel = [
     .withMessage("displayName must be a string")
     .matches(/^[A-Za-z\s]+$/)
     .withMessage("displayName can only contain letters and spaces"),
+];
+
+export const validateDeleteModel = [
+  param("id")
+    .trim()
+    .notEmpty()
+    .withMessage("id is required")
+    .isUUID()
+    .withMessage("id must be a valid UUID")
+    .custom(async (id) => {
+      try {
+        const model = await getModelByIdService(id);
+        console.log("hello world");
+        if (!model) {
+          return Promise.reject("Model with this ID does not exist");
+        }
+      } catch (error) {
+        console.error("Error checking model existence:", error);
+        return Promise.reject("Error verifying model existence");
+      }
+    }),
 ];

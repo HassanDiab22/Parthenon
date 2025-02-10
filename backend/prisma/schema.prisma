@@ -49,19 +49,13 @@ model Product {
   updatedAt   DateTime @updatedAt
 }
 
-
-model Order {
-  id String @id @default(uuid())
-  createdAt DateTime @default(now())
-}
-
 model Trder {
-  id String @id @default(uuid())
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
 }
 
 model Zsrder {
-  id String @id @default(uuid())
-  name        String   @unique
+  id        String   @id @default(uuid())
+  name      String   @unique
   createdAt DateTime @default(now())
 }
