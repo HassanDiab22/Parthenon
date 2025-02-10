@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Model {
+  id          String       @id @default(uuid())
+  displayName String
+  prismaName  String       @unique
+  fields      ModelField[]
+  createdAt   DateTime     @default(now())
+}
+
+enum FieldType {
+  INT
+  STRING
+  DOUBLE
+  DATE
+}
+
+model ModelField {
+  id           String    @id @default(uuid())
+  type         FieldType
+  defaultValue String
+  modelId      String
+  model        Model     @relation(fields: [modelId], references: [id], onDelete: Cascade)
+  createdAt    DateTime  @default(now())
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  price       Decimal  @default(0.00)
+  quantity    Int      @default(0)
+  category    String
+  sku         String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
