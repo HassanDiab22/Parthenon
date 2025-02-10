@@ -48,3 +48,20 @@ model Product {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+
+model Order {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+}
+
+model Trder {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+}
+
+model Zsrder {
+  id String @id @default(uuid())
+  name        String   @unique
+  createdAt DateTime @default(now())
+}

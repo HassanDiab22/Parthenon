@@ -10,6 +10,7 @@ export async function testGetModelFromPrismaSchema() {
   // ✅ Call getModelFromPrismaSchema() to fetch the model from schema.prisma
   const result = await modelBuilder.getModelFromPrismaSchema();
   const fields = await modelBuilder.getModelFields(result.modelDefinition);
+  // const sync = await modelBuilder.syncPrismaModel(fields);
   // ✅ Print the output
   console.log("Test Result:", result);
 }

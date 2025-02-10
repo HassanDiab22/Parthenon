@@ -1,5 +1,9 @@
 import prisma from "../../prisma/prismaClient.js";
-import { getRegisterdModels } from "../../utils/adminPanel/helpers.js";
+import {
+  getRegisterdModels,
+  runPrismaMigration,
+} from "../../utils/adminPanel/helpers.js";
+import PrismaModelBuilder from "../../utils/adminPanel/prismaModelBuilder.js";
 
 export const getAllModelsService = async ({
   fields = [],
@@ -43,13 +47,21 @@ export const deleteModelService = async (prismaName) => {
   return true;
 };
 
-export const createModelService = async (model) => {
-  return await prisma.model.create({
+export const createModelService = async ({ displayName, prismaName }) => {
+  const model = await prisma.model.create({
     data: {
-      displayName: model.charAt(0).toUpperCase() + model.slice(1),
-      prismaName: model,
+      displayName,
+      prismaName: prismaName.charAt(0).toUpperCase() + prismaName.slice(1),
     },
   });
+  console.log("herr");
+  const modelBuilder = new PrismaModelBuilder(model);
+
+  await modelBuilder.initFieldInPrismaSchema(model);
+
+  await runPrismaMigration(`create_${model}`);
+
+  return model;
 };
 
 export const bulkCreateModelService = async (models) => {
